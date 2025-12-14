@@ -41,7 +41,24 @@ func PurchaseSweet(c *gin.Context) {
 	}
 
 	// Record Transaction
-	userID := c.GetUint("userID") // Assuming AuthMiddleware sets this
+	// AuthMiddleware sets "userId" (lowercase d) from claims["sub"]
+	// We need to cast it properly. The claims parser likely returns float64 for numbers in JSON.
+	// Let's check how utils.ValidateToken returns it.
+	// Assuming it's set as float64 or string, we need to be careful.
+	// But c.GetUint might handle it if it's int/uint.
+	// Let's use c.Get("userId") and type assert.
+
+	var userID uint
+	if idVal, exists := c.Get("userId"); exists {
+		// JWT claims often parse numbers as float64
+		if idFloat, ok := idVal.(float64); ok {
+			userID = uint(idFloat)
+		} else {
+			// Try other types just in case
+			log.Printf("userId is of type %T: %v", idVal, idVal)
+		}
+	}
+
 	transaction := models.Transaction{
 		UserID:     userID,
 		SweetID:    sweet.ID,
