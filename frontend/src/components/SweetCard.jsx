@@ -48,6 +48,7 @@ const SweetCard = ({ sweet, onPurchase }) => {
                                 onClick={handleDecrement}
                                 disabled={quantity <= 1}
                                 className="p-1 hover:bg-white rounded-md transition-colors disabled:opacity-50"
+                                aria-label="Decrease quantity"
                             >
                                 <Minus className="h-4 w-4 text-gray-600" />
                             </button>
@@ -56,6 +57,7 @@ const SweetCard = ({ sweet, onPurchase }) => {
                                 onClick={handleIncrement}
                                 disabled={quantity >= sweet.quantity}
                                 className="p-1 hover:bg-white rounded-md transition-colors disabled:opacity-50"
+                                aria-label="Increase quantity"
                             >
                                 <Plus className="h-4 w-4 text-gray-600" />
                             </button>
