@@ -20,23 +20,28 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
-    const addToCart = (sweet) => {
+    const addToCart = (sweet, quantity = 1) => {
         setCart(prevCart => {
             const existingItem = prevCart.find(item => item.ID === sweet.ID);
             if (existingItem) {
-                if (existingItem.quantity >= sweet.quantity) {
+                const newQuantity = existingItem.quantity + quantity;
+                if (newQuantity > sweet.quantity) {
                     toast.error('Cannot add more than available stock');
                     return prevCart;
                 }
                 toast.success('Updated quantity in cart');
                 return prevCart.map(item =>
                     item.ID === sweet.ID
-                        ? { ...item, quantity: item.quantity + 1 }
+                        ? { ...item, quantity: newQuantity }
                         : item
                 );
             }
+            if (quantity > sweet.quantity) {
+                toast.error('Cannot add more than available stock');
+                return prevCart;
+            }
             toast.success('Added to cart');
-            return [...prevCart, { ...sweet, quantity: 1 }];
+            return [...prevCart, { ...sweet, quantity }];
         });
     };
 
