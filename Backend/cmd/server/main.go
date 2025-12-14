@@ -5,7 +5,9 @@ import (
 	"os"
 
 	"github.com/Yaduvamsikrishna123/Sweet-Shop-Management-System/internal/database"
+	"github.com/Yaduvamsikrishna123/Sweet-Shop-Management-System/internal/handlers"
 	"github.com/Yaduvamsikrishna123/Sweet-Shop-Management-System/internal/models"
+	"github.com/Yaduvamsikrishna123/Sweet-Shop-Management-System/internal/repository"
 	"github.com/Yaduvamsikrishna123/Sweet-Shop-Management-System/internal/routes"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -58,10 +60,19 @@ func main() {
 	// CORS Configuration
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
+	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
 	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
 	r.Use(cors.New(config))
 
-	routes.SetupRoutes(r)
+	// Initialize Repositories
+	sweetRepo := repository.NewSweetRepository(database.DB)
+	userRepo := repository.NewUserRepository(database.DB)
+	transactionRepo := repository.NewTransactionRepository(database.DB)
+
+	// Initialize Handler
+	h := handlers.NewHandler(sweetRepo, userRepo, transactionRepo)
+
+	routes.SetupRoutes(r, h)
 
 	port := os.Getenv("PORT")
 	if port == "" {

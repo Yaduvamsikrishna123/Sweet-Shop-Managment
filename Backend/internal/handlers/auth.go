@@ -4,25 +4,28 @@ import (
 	"net/http"
 
 	"github.com/Yaduvamsikrishna123/Sweet-Shop-Management-System/internal/models"
-	"github.com/Yaduvamsikrishna123/Sweet-Shop-Management-System/internal/repository"
 	"github.com/Yaduvamsikrishna123/Sweet-Shop-Management-System/pkg/utils"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 )
 
-type AuthInput struct {
+type RegisterInput struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
-func Register(c *gin.Context) {
-	var input AuthInput
+type LoginInput struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
+func (h *Handler) Register(c *gin.Context) {
+	var input RegisterInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
+	hashedPassword, err := utils.HashPassword(input.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
 		return
@@ -30,32 +33,32 @@ func Register(c *gin.Context) {
 
 	user := models.User{
 		Username: input.Username,
-		Password: string(hashedPassword),
+		Password: hashedPassword,
 		Role:     "user", // Default role
 	}
 
-	if err := repository.CreateUser(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Username already exists"})
+	if err := h.UserRepo.Create(&user); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
 }
 
-func Login(c *gin.Context) {
-	var input AuthInput
+func (h *Handler) Login(c *gin.Context) {
+	var input LoginInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	user, err := repository.GetUserByUsername(input.Username)
+	user, err := h.UserRepo.GetByUsername(input.Username)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+	if !utils.CheckPasswordHash(input.Password, user.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
@@ -66,5 +69,5 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	c.JSON(http.StatusOK, gin.H{"token": token, "role": user.Role})
 }

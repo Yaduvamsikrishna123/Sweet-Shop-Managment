@@ -6,40 +6,40 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(r *gin.Engine) {
+func SetupRoutes(r *gin.Engine, h *handlers.Handler) {
 	api := r.Group("/api")
 
 	// Auth routes
 	auth := api.Group("/auth")
 	{
-		auth.POST("/register", handlers.Register)
-		auth.POST("/login", handlers.Login)
+		auth.POST("/register", h.Register)
+		auth.POST("/login", h.Login)
 	}
 
 	// Public Sweets routes
 	sweetsPublic := api.Group("/sweets")
 	{
-		sweetsPublic.GET("", handlers.ListSweets)
-		sweetsPublic.GET("/search", handlers.SearchSweets)
+		sweetsPublic.GET("", h.ListSweets)
+		sweetsPublic.GET("/search", h.SearchSweets)
 	}
 
 	// Protected Sweets routes
 	sweets := api.Group("/sweets")
 	sweets.Use(middleware.AuthMiddleware())
 	{
-		sweets.POST("", middleware.AdminMiddleware(), handlers.AddSweet)
-		sweets.PUT("/:id", middleware.AdminMiddleware(), handlers.UpdateSweet)
-		sweets.DELETE("/:id", middleware.AdminMiddleware(), handlers.DeleteSweet)
+		sweets.POST("", middleware.AdminMiddleware(), h.AddSweet)
+		sweets.PUT("/:id", middleware.AdminMiddleware(), h.UpdateSweet)
+		sweets.DELETE("/:id", middleware.AdminMiddleware(), h.DeleteSweet)
 
 		// Inventory routes
-		sweets.POST("/:id/purchase", handlers.PurchaseSweet)
-		sweets.POST("/:id/restock", middleware.AdminMiddleware(), handlers.RestockSweet)
+		sweets.POST("/:id/purchase", h.PurchaseSweet)
+		sweets.POST("/:id/restock", middleware.AdminMiddleware(), h.RestockSweet)
 	}
 
 	// Admin routes
 	admin := api.Group("/admin")
 	admin.Use(middleware.AuthMiddleware(), middleware.AdminMiddleware())
 	{
-		admin.GET("/transactions", handlers.GetAllTransactions)
+		admin.GET("/transactions", h.GetAllTransactions)
 	}
 }

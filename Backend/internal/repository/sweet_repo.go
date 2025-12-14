@@ -1,37 +1,44 @@
 package repository
 
 import (
-	"github.com/Yaduvamsikrishna123/Sweet-Shop-Management-System/internal/database"
 	"github.com/Yaduvamsikrishna123/Sweet-Shop-Management-System/internal/models"
+	"gorm.io/gorm"
 )
 
-func CreateSweet(sweet *models.Sweet) error {
-	return database.DB.Create(sweet).Error
+type GormSweetRepository struct {
+	DB *gorm.DB
 }
 
-func GetAllSweets() ([]models.Sweet, error) {
+func NewSweetRepository(db *gorm.DB) SweetRepository {
+	return &GormSweetRepository{DB: db}
+}
+
+func (r *GormSweetRepository) Create(sweet *models.Sweet) error {
+	return r.DB.Create(sweet).Error
+}
+
+func (r *GormSweetRepository) GetAll() ([]models.Sweet, error) {
 	var sweets []models.Sweet
-	err := database.DB.Find(&sweets).Error
+	err := r.DB.Find(&sweets).Error
 	return sweets, err
 }
 
-func GetSweetByID(id uint) (*models.Sweet, error) {
+func (r *GormSweetRepository) GetByID(id uint) (*models.Sweet, error) {
 	var sweet models.Sweet
-	err := database.DB.First(&sweet, id).Error
+	err := r.DB.First(&sweet, id).Error
 	return &sweet, err
 }
 
-func UpdateSweet(sweet *models.Sweet) error {
-	return database.DB.Save(sweet).Error
+func (r *GormSweetRepository) Update(sweet *models.Sweet) error {
+	return r.DB.Save(sweet).Error
 }
 
-func DeleteSweet(id uint) error {
-	return database.DB.Delete(&models.Sweet{}, id).Error
+func (r *GormSweetRepository) Delete(id uint) error {
+	return r.DB.Delete(&models.Sweet{}, id).Error
 }
 
-func SearchSweets(query string) ([]models.Sweet, error) {
+func (r *GormSweetRepository) Search(query string) ([]models.Sweet, error) {
 	var sweets []models.Sweet
-	// Simple search by name or category
-	err := database.DB.Where("name ILIKE ? OR category ILIKE ?", "%"+query+"%", "%"+query+"%").Find(&sweets).Error
+	err := r.DB.Where("name ILIKE ? OR category ILIKE ?", "%"+query+"%", "%"+query+"%").Find(&sweets).Error
 	return sweets, err
 }
