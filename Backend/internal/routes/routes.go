@@ -16,13 +16,18 @@ func SetupRoutes(r *gin.Engine) {
 		auth.POST("/login", handlers.Login)
 	}
 
-	// Sweets routes (Protected)
+	// Public Sweets routes
+	sweetsPublic := api.Group("/sweets")
+	{
+		sweetsPublic.GET("", handlers.ListSweets)
+		sweetsPublic.GET("/search", handlers.SearchSweets)
+	}
+
+	// Protected Sweets routes
 	sweets := api.Group("/sweets")
 	sweets.Use(middleware.AuthMiddleware())
 	{
 		sweets.POST("", middleware.AdminMiddleware(), handlers.AddSweet)
-		sweets.GET("", handlers.ListSweets)
-		sweets.GET("/search", handlers.SearchSweets)
 		sweets.PUT("/:id", middleware.AdminMiddleware(), handlers.UpdateSweet)
 		sweets.DELETE("/:id", middleware.AdminMiddleware(), handlers.DeleteSweet)
 
