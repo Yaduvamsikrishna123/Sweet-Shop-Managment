@@ -4,6 +4,7 @@ import SweetCard from '../components/SweetCard';
 import { Search, Filter } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from '../context/CartContext';
 
 const Home = () => {
     const [sweets, setSweets] = useState([]);
@@ -11,6 +12,7 @@ const Home = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [categories, setCategories] = useState(['All']);
+    const { addToCart } = useCart();
 
     useEffect(() => {
         fetchSweets();
@@ -30,15 +32,8 @@ const Home = () => {
         }
     };
 
-    const handlePurchase = async (id) => {
-        try {
-            const quantity = 1; // Default purchase quantity
-            await api.post(`/sweets/${id}/purchase`, { quantity });
-            toast.success('Purchase successful!');
-            fetchSweets(); // Refresh data
-        } catch (error) {
-            toast.error(error.response?.data?.error || 'Purchase failed');
-        }
+    const handleAddToCart = (sweet) => {
+        addToCart(sweet);
     };
 
     const filteredSweets = sweets.filter(sweet => {
@@ -87,8 +82,8 @@ const Home = () => {
                             key={category}
                             onClick={() => setSelectedCategory(category)}
                             className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${selectedCategory === category
-                                    ? 'bg-pink-600 text-white'
-                                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                                ? 'bg-pink-600 text-white'
+                                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                                 }`}
                         >
                             {category}
@@ -101,7 +96,7 @@ const Home = () => {
             <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <AnimatePresence>
                     {filteredSweets.map(sweet => (
-                        <SweetCard key={sweet.ID} sweet={sweet} onPurchase={handlePurchase} />
+                        <SweetCard key={sweet.ID} sweet={sweet} onPurchase={() => handleAddToCart(sweet)} />
                     ))}
                 </AnimatePresence>
             </motion.div>

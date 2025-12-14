@@ -20,10 +20,10 @@ func SetupRoutes(r *gin.Engine) {
 	sweets := api.Group("/sweets")
 	sweets.Use(middleware.AuthMiddleware())
 	{
-		sweets.POST("", handlers.AddSweet)
+		sweets.POST("", middleware.AdminMiddleware(), handlers.AddSweet)
 		sweets.GET("", handlers.ListSweets)
 		sweets.GET("/search", handlers.SearchSweets)
-		sweets.PUT("/:id", handlers.UpdateSweet)
+		sweets.PUT("/:id", middleware.AdminMiddleware(), handlers.UpdateSweet)
 		sweets.DELETE("/:id", middleware.AdminMiddleware(), handlers.DeleteSweet)
 
 		// Inventory routes
