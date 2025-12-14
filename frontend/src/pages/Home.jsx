@@ -96,7 +96,7 @@ const Home = () => {
             <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <AnimatePresence>
                     {filteredSweets.map(sweet => (
-                        <SweetCard key={sweet.ID} sweet={sweet} onPurchase={() => handleAddToCart(sweet)} />
+                        <SweetCard key={sweet.ID} sweet={sweet} onPurchase={(quantity) => addToCart(sweet, quantity)} />
                     ))}
                 </AnimatePresence>
             </motion.div>
