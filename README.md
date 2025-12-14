@@ -3,23 +3,6 @@
 ## Project Overview
 The **Sweet Shop Management System** is a full-stack web application designed to streamline the operations of a sweet shop. It provides a comprehensive solution for managing inventory, processing customer orders, and tracking sales history. The system features role-based access control, allowing administrators to manage products and view transaction logs, while customers can browse sweets, manage their shopping cart, and place orders.
 
-## Screenshots
-
-### Home Page
-![Home Page](screenshots/home_page.png)
-
-### Shopping Cart
-![Shopping Cart](screenshots/cart_page.png)
-
-### Login Page
-![Login Page](screenshots/login_page.png)
-
-### Admin Dashboard - Inventory
-![Admin Inventory](screenshots/admin_inventory.png)
-
-### Admin Dashboard - Transactions
-![Admin Transactions](screenshots/admin_transactions.png)
-
 ## Tech Stack
 
 ### Backend
@@ -38,6 +21,25 @@ The **Sweet Shop Management System** is a full-stack web application designed to
 - **Routing**: React Router DOM
 - **HTTP Client**: Axios
 - **UI Components**: Lucide React (Icons), Framer Motion (Animations), React Hot Toast (Notifications)
+
+
+## Screenshots
+
+### Home Page
+![Home Page](screenshots/home_page.png)
+
+### Shopping Cart
+![Shopping Cart](screenshots/cart_page.png)
+
+### Login Page
+![Login Page](screenshots/login_page.png)
+
+### Admin Dashboard - Inventory
+![Admin Inventory](screenshots/admin_inventory.png)
+
+### Admin Dashboard - Transactions
+![Admin Transactions](screenshots/admin_transactions.png)
+
 
 ## Folder Structure
 
