@@ -3,6 +3,23 @@
 ## Project Overview
 The **Sweet Shop Management System** is a full-stack web application designed to streamline the operations of a sweet shop. It provides a comprehensive solution for managing inventory, processing customer orders, and tracking sales history. The system features role-based access control, allowing administrators to manage products and view transaction logs, while customers can browse sweets, manage their shopping cart, and place orders.
 
+## Screenshots
+
+### Home Page
+![Home Page](screenshots/home_page.png)
+
+### Shopping Cart
+![Shopping Cart](screenshots/cart_page.png)
+
+### Login Page
+![Login Page](screenshots/login_page.png)
+
+### Admin Dashboard - Inventory
+![Admin Inventory](screenshots/admin_inventory.png)
+
+### Admin Dashboard - Transactions
+![Admin Transactions](screenshots/admin_transactions.png)
+
 ## Tech Stack
 
 ### Backend
@@ -126,24 +143,23 @@ Run the provided PowerShell script to start both backend and frontend servers:
     ```
     The frontend will start on `http://localhost:5173`.
 
-## Screenshots
+   #### My AI Usage
+Used ChatGPT to create a detailed and structured project plan.
+Leveraged ChatGPT to understand best practices for building the project and to receive feedback on my project structure.
+Utilized ChatGPT and DeepSeek to revise concepts such as token-based authentication and authorization.
+Successfully configured JWT with ChatGPT’s guidance, using it to generate JwtUtils methods only.
+Consulted ChatGPT to research Test-Driven Development (TDD), related tools, and how to apply them in my workflow.
+Used ChatGPT to gain knowledge on testing different backend components.
+Designed and validated the model with the help of ChatGPT to ensure validations were working as expected.
+Used ChatGPT to learn about test case design and development, and created test cases for the service and user controller layers.
+Utilized ChatGPT and DeepSeek to strengthen my understanding of frontend testing.
+Used ChatGPT to generate test cases for UI components.
+Leveraged ChatGPT for handling complex frontend state management scenarios.
+Leveraged ChatGPT to get feedback and suggestions for optimizing business logic.
+Used GitHub Copilot to analyze potential issues in business logic and improve code based on suggested best practices.
+##### Reflection
+Using AI tools like ChatGPT, DeepSeek, and Copilot significantly improved my workflow. They helped me quickly revise concepts, design test cases, and validate my implementation against best practices. AI served as both a coding assistant and a mentor by providing guidance, optimization strategies, and feedback. However, I carefully validated AI-generated code before integrating it to ensure correctness, maintainability, and alignment with project requirements. Overall, AI accelerated my development process while enhancing the quality of my code and tests.
 
-### Home Page
-![Home Page](screenshots/home_page.png)
 
-### Shopping Cart
-![Shopping Cart](screenshots/cart_page.png)
 
-### Login Page
-![Login Page](screenshots/login_page.png)
 
-### Admin Dashboard - Inventory
-![Admin Inventory](screenshots/admin_inventory.png)
-
-### Admin Dashboard - Transactions
-![Admin Transactions](screenshots/admin_transactions.png)
-
-## Default Credentials
-- **Admin User**:
-    - Username: `admin`
-    - Password: `admin123`
