@@ -10,6 +10,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func main() {
@@ -20,7 +21,7 @@ func main() {
 	database.ConnectDB()
 
 	// Auto Migrate
-	database.DB.AutoMigrate(&models.User{}, &models.Sweet{})
+	database.DB.AutoMigrate(&models.User{}, &models.Sweet{}, &models.Transaction{})
 
 	// Seed Data
 	var count int64
@@ -36,6 +37,20 @@ func main() {
 		}
 		database.DB.Create(&sweets)
 		log.Println("Seeded database with initial sweets")
+	}
+
+	// Seed Admin User
+	var adminCount int64
+	database.DB.Model(&models.User{}).Where("role = ?", "admin").Count(&adminCount)
+	if adminCount == 0 {
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("admin123"), bcrypt.DefaultCost)
+		admin := models.User{
+			Username: "admin",
+			Password: string(hashedPassword),
+			Role:     "admin",
+		}
+		database.DB.Create(&admin)
+		log.Println("Seeded database with default admin user")
 	}
 
 	r := gin.Default()
