@@ -79,15 +79,10 @@ Sweet Shop Management System/
     - `DELETE /api/sweets/:id`: Delete sweet.
     - `GET /api/admin/transactions`: View history.
 
-## Screenshots
+## How to Setup
 
-### Home Page
-![Home Page](screenshots/home_page.png)
-
-### Shopping Cart
-![Shopping Cart](screenshots/cart_page.png)
-
-### Login Page
+### Prerequisites
+- **Go** (Golang) installed.
 - **Node.js** and **npm** installed.
 
 ### Quick Start (Windows)
@@ -130,6 +125,23 @@ Run the provided PowerShell script to start both backend and frontend servers:
     npm run dev
     ```
     The frontend will start on `http://localhost:5173`.
+
+## Screenshots
+
+### Home Page
+![Home Page](screenshots/home_page.png)
+
+### Shopping Cart
+![Shopping Cart](screenshots/cart_page.png)
+
+### Login Page
+![Login Page](screenshots/login_page.png)
+
+### Admin Dashboard - Inventory
+![Admin Inventory](screenshots/admin_inventory.png)
+
+### Admin Dashboard - Transactions
+![Admin Transactions](screenshots/admin_transactions.png)
 
 ## Default Credentials
 - **Admin User**:
