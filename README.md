@@ -79,10 +79,15 @@ Sweet Shop Management System/
     - `DELETE /api/sweets/:id`: Delete sweet.
     - `GET /api/admin/transactions`: View history.
 
-## How to Setup
+## Screenshots
 
-### Prerequisites
-- **Go** (Golang) installed.
+### Home Page
+![Home Page](screenshots/home_page.png)
+
+### Shopping Cart
+![Shopping Cart](screenshots/cart_page.png)
+
+### Login Page
 - **Node.js** and **npm** installed.
 
 ### Quick Start (Windows)
