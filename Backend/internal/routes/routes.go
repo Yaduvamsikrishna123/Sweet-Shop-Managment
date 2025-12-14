@@ -30,4 +30,11 @@ func SetupRoutes(r *gin.Engine) {
 		sweets.POST("/:id/purchase", handlers.PurchaseSweet)
 		sweets.POST("/:id/restock", middleware.AdminMiddleware(), handlers.RestockSweet)
 	}
+
+	// Admin routes
+	admin := api.Group("/admin")
+	admin.Use(middleware.AuthMiddleware(), middleware.AdminMiddleware())
+	{
+		admin.GET("/transactions", handlers.GetAllTransactions)
+	}
 }
