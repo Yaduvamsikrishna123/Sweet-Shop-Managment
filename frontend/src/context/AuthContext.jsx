@@ -37,10 +37,10 @@ export const AuthProvider = ({ children }) => {
             const decoded = jwtDecode(token);
             setUser({ ...decoded, token });
             toast.success('Login successful!');
-            return true;
+            return decoded;
         } catch (error) {
             toast.error(error.response?.data?.error || 'Login failed');
-            return false;
+            return null;
         }
     };
 
