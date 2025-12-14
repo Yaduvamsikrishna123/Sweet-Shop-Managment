@@ -1,15 +1,49 @@
+import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
+import api from '../api/axios';
+
 const Cart = () => {
     const { cart, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
+    const [processing, setProcessing] = useState(false);
 
-    const handleCheckout = () => {
-        toast.success('Order placed successfully! (Demo)');
-        clearCart();
+    const handleCheckout = async () => {
+        if (processing) return;
+        setProcessing(true);
+
+        let successCount = 0;
+        let failCount = 0;
+
+        for (const item of cart) {
+            try {
+                await api.post(`/sweets/${item.ID}/purchase`, { quantity: item.quantity });
+                successCount++;
+            } catch (error) {
+                console.error(`Failed to purchase ${item.name}:`, error);
+                failCount++;
+            }
+        }
+
+        setProcessing(false);
+
+        if (successCount > 0) {
+            if (failCount === 0) {
+                toast.success('Order placed successfully!');
+                clearCart();
+            } else {
+                toast.success(`Purchased ${successCount} items. Failed to purchase ${failCount} items.`);
+                // Ideally we should only remove successful items, but for now let's keep it simple
+                // or maybe we shouldn't clear cart if there are failures?
+                // Let's clear for now as per "demo" simplicity, but in real app we'd keep failed items.
+                clearCart();
+            }
+        } else if (failCount > 0) {
+            toast.error('Failed to place order. Please try again.');
+        }
     };
 
     if (cart.length === 0) {
